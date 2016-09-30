@@ -2,64 +2,100 @@
 <html>
   <header>
     <meta charset="utf-8">
-    <title>Bookstore</title>
+    <title>Book Store</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
   </header>
   <body>
-    <h1>Book Store</h1>
-    <h2>Insert New Book</h2>
-    <form action="{% url 'store:insert' %}" method="POST">
-      {% csrf_token %}
-      Book ID : <input type="number" name="book_id">
-      <br><br>
-      ISBN : <input type="number" name="isbn">
-      <br><br>
-      Book Name : <input type="text" name="book_name">
-      <br><br>
-      Price : <input type="number" name="price">
-      <br><br>
-      Author : <input type="text" name="author">
-      <br><br>
-      <input type="submit" value="INSERT">
-    </form>
-    <table>
-      <!-- table header -->
-      <tr>
-        <th>Book ID</th>
-        <th>ISBN</th>
-        <th>Book Name</th>
-        <th>Price</th>
-        <th>Author</th>
-        <th></th>
-        <th></th>
-      </tr>
-      <!-- iterating inserting row in table -->
-      {% for book in book_list %}
+    <div class="container">
+      <div class="page-header">
+        <h1>Book Store</h1>
+      </div>
+    </div>
+    <div class="jumbotron">
+      <div class="container">
+        <h2>Insert New Book</h2>
+        <form action="{% url 'store:insert' %}" method="POST" class="form-horizontal">
+          {% csrf_token %}
+          <div class="form-group">
+            <label  for="book_id" class="col-sm-2 control-label">Book ID</label>
+            <div class="col-sm-10">
+              <input type="number" name="book_id" id="book_id"  class="form-control" placeholder="Input Book ID ...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label  for="isbn" class="col-sm-2 control-label">ISBN</label>
+            <div class="col-sm-10">
+              <input type="number" name="isbn" id="isbn"   class="form-control" placeholder="Input ISBN ...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label  for="book_name" class="col-sm-2 control-label">Book Name</label>
+            <div class="col-sm-10">
+              <input type="text" name="book_name" id="book_name"  class="form-control" placeholder="Input Book Name ...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label  for="price" class="col-sm-2 control-label">Price</label>
+            <div class="col-sm-10">
+              <input type="number" name="price" id="price"  class="form-control" placeholder="Input Price ..." >
+            </div>
+          </div>
+          <div class="form-group">
+            <label  for="author" class="col-sm-2 control-label">Author</label>
+            <div class="col-sm-10">
+              <input type="text" name="author" id="author"  class="form-control" placeholder="Input Author ..." >
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <input type="submit" value="INSERT" class="btn btn-success">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="container">
+      <h2>Book List</h2>
+      <table class="table table-striped">
+        <!-- table header -->
         <tr>
-          <form action="{% url 'store:update' %}" method="post">
-            {% csrf_token %}
-            {% if update_book == book %}
-              <td><input type="number" name="book_id" value="{{ book.book_id }}"></td>
-              <td><input type="number" name="isbn" value="{{ book.isbn }}"></td>
-              <td><input type="text" name="book_name" value="{{ book.book_name }}"></td>
-              <td><input type="number" name="price" value="{{ book.price }}"></td>
-              <td><input type="text" name="author" value="{{ book.author }}"></td>
-            {% else %}
-              <td>{{ book.book_id }}</td>
-              <td>{{ book.isbn }}</td>
-              <td>{{ book.book_name }}</td>
-              <td>{{ book.price }}</td>
-              <td>{{ book.author }}</td>
-            {% endif %}
-            <td><button name="book_id_update" value="{{ book.book_id }}">Update</button></td>
-          </form>
-          <td>
-            <form action="{% url 'store:delete' %}" method="post">
-              {% csrf_token %}
-              <button name="book_id" value="{{ book.book_id }}">Delete</button>
-            </form>
-          </td>
+          <th>Book ID</th>
+          <th>ISBN</th>
+          <th>Book Name</th>
+          <th>Price</th>
+          <th>Author</th>
+          <th></th>
+          <th></th>
         </tr>
-      {% endfor %}
-    </table>
+        <!-- iterating inserting row in table -->
+        {% for book in book_list %}
+          <tr>
+            <form action="{% url 'store:update' %}" method="post">
+              {% csrf_token %}
+              {% if update_book == book %}
+                <td><input type="number" name="book_id" value="{{ book.book_id }}" class="form-control" ></td>
+                <td><input type="number" name="isbn" value="{{ book.isbn }}" class="form-control" ></td>
+                <td><input type="text" name="book_name" value="{{ book.book_name }}" class="form-control" ></td>
+                <td><input type="number" name="price" value="{{ book.price }}" class="form-control" ></td>
+                <td><input type="text" name="author" value="{{ book.author }}" class="form-control" ></td>
+              {% else %}
+                <td>{{ book.book_id }}</td>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.book_name }}</td>
+                <td>{{ book.price }}</td>
+                <td>{{ book.author }}</td>
+              {% endif %}
+              <td><button name="book_id_update" value="{{ book.book_id }}" class="btn btn-info">Update</button></td>
+            </form>
+            <td>
+              <form action="{% url 'store:delete' %}" method="post">
+                {% csrf_token %}
+                <button name="book_id" value="{{ book.book_id }}" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
   </body>
 </html>
