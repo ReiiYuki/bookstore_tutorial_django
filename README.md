@@ -283,3 +283,42 @@
     ```
 
     Then go to see your table in your database you will see your book is added to the schema.
+
+  10. Create simple table for show list of book on it.
+
+    Before we create the table, let's modify our `index` method in `store\views.py`　to make it able to send list of book to the webpage.
+    ```python
+    def index(request) :
+        book_list = Book.objects.all()
+        return render(request,'index.html',{'book_list':book_list})
+    ```
+
+    Add this following table to body of `store\templets\index.html`      
+    You will see that I use for each iterating our book_list which we parse it in index method.
+    ```html
+    <table>
+      <!-- table header -->
+      <tr>
+        <th>Book ID</th>
+        <th>ISBN</th>
+        <th>Book Name</th>
+        <th>Price</th>
+        <th>Author</th>
+      </tr>
+      <!-- iterating inserting row in table -->
+      {% for book in book_list %}
+        <tr>
+          <td>{{ book.book_id }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.book_name }}</td>
+            <td>{{ book.price }}</td>
+            <td>{{ book.author }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    ```
+
+    Let's run server and go to `http://localhost:8000/` and you will see that list of table is appeared.
+    ```
+    python manage.py runserver
+    ```
