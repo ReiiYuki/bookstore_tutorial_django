@@ -98,3 +98,42 @@
     Now, you will got `store` directory in your project
 
   4. Connect your app to your project
+
+    Edit `bookstore\settings.py` at INSTALLED_APPS
+    ```python
+    INSTALLED_APPS = [
+        'store.apps.StoreConfig', #ADD THIS LINE
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+    ]
+    ```
+
+  5. Route your app to project.
+
+    Create `store\urls.py`
+    ```python
+    from django.conf.urls import url
+
+    from . import views
+
+    app_name = 'store'
+
+    urlpatterns = [
+
+    ]
+    ```
+
+    Edit `bookstore\urls.py` to connect to your `store\urls.py`
+    ```python
+    from django.conf.urls import url,include
+    from django.contrib import admin
+
+    urlpatterns = [
+        url(r'^',include('store.urls')),
+        url(r'^admin/', admin.site.urls),
+    ]
+    ```
