@@ -195,5 +195,31 @@
     ```
 
     Let's run server and go to `http://localhost:8000/` you will see what you wrote in your index.html
-    `python manage.py runserver`
-    
+    ```
+    python manage.py runserver
+    ```
+
+  8. Create simple insert form.
+
+    Add this part to body of your `store\templates\index.html`
+    ```html
+    <h2>Insert New Book</h2>
+    <form>
+      Book ID : <input type="number">
+      <br><br>
+      ISBN : <input type="number">
+      <br><br>
+      Book Name : <input type="text">
+      <br><br>
+      Price : <input type="number">
+      <br><br>
+      Author : <input type="text">
+      <br><br>
+      <input type="submit" value="INSERT">
+    </form>
+    ```
+
+    Let's run server and go to `http://localhost:8000/` you will see the simple insert form. However it doesn't work.
+    ```
+    python manage.py runserver
+    ```
