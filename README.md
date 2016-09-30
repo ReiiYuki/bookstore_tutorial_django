@@ -63,4 +63,28 @@
       del request.session['A'] #destroy field A
     ```
 
+##Let's Start!
+  1. Initialize our project
+
+    ```
+    django-admin startproject bookstore
+    cd bookstore
+    ```
+
+  2. Change Database Setting to use MySQL
+
+    Edit `bookstore\settings.py` at DATABASES
+    ```python
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'bookstore',
+            'HOST' : 'localhost',
+            'USER' : 'root',
+            'PASSSWORD' : '',
+            'PORT' : '3306'
+        }
+    }
+    ```
+
   
