@@ -309,10 +309,10 @@
       {% for book in book_list %}
         <tr>
           <td>{{ book.book_id }}</td>
-            <td>{{ book.isbn }}</td>
-            <td>{{ book.book_name }}</td>
-            <td>{{ book.price }}</td>
-            <td>{{ book.author }}</td>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.book_name }}</td>
+          <td>{{ book.price }}</td>
+          <td>{{ book.author }}</td>
         </tr>
       {% endfor %}
     </table>
@@ -322,3 +322,59 @@
     ```
     python manage.py runserver
     ```
+
+  11. Make delete button to delete each book.
+
+    First, we have to create one more method to handle delete action when request is comming in `store\views.py`.       
+    Ps. we will delete it by id of it.
+    ```python
+    def delete(request) :
+        book_id = request.POST['book_id']
+        book = Book.objects.get(book_id=book_id)
+        Book.delete(book)
+        return HttpResponseRedirect(reverse('store:index'))
+    ```
+
+    Add this following line to urlpatterns in `store\urls.py` to make route to delete method
+    ```python
+    url(r'^delete/$',views.delete,name='delete'),
+    ```
+
+    Let's modify table in `store\templates\index.html` to have delete in each row.        
+    However now we have only 5 columns, so we have to create one more empty header to represent to column of delete button.
+    ```html
+    <table>
+      <!-- table header -->
+      <tr>
+        <th>Book ID</th>
+        <th>ISBN</th>
+        <th>Book Name</th>
+        <th>Price</th>
+        <th>Author</th>
+        <th></th>
+      </tr>
+      <!-- iterating inserting row in table -->
+      {% for book in book_list %}
+        <tr>
+          <td>{{ book.book_id }}</td>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.book_name }}</td>
+          <td>{{ book.price }}</td>
+          <td>{{ book.author }}</td>
+          <td>
+            <form action="{% url 'store:delete' %}" method="post">
+              {% csrf_token %}
+              <button name="book_id" value="{{ book.book_id }}">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+    ```
+
+    Let's run server and go to `http://localhost:8000/` and you will see delete buttons are appeared.
+    ```
+    python manage.py runserver
+    ```
+
+    If you press delete button it will delete those row from table and database.

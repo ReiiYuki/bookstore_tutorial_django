@@ -17,3 +17,9 @@ def insert(request) :
     book = Book.objects.create(book_id=book_id,isbn=isbn,book_name=book_name,price=price,author=author)
     book.save()
     return HttpResponseRedirect(reverse('store:index'))
+
+def delete(request) :
+    book_id = request.POST['book_id']
+    book = Book.objects.get(book_id=book_id)
+    Book.delete(book)
+    return HttpResponseRedirect(reverse('store:index'))
