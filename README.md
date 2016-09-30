@@ -378,3 +378,98 @@
     ```
 
     If you press delete button it will delete those row from table and database.
+
+  12. Let's make our book updatable!
+
+    This quite difficult!
+
+    I create method for update which has try catch to detect are their the first time of clicking update.
+    Add update method to `store\views.py`
+    First, I try to get book by `request.POST['book_id_update']` for editing.    
+    However if `request.POST['book_id_update']` doesn't exist because this is the first time I click update button, so I reach to be KeyError.        
+    So I remember it in session, else I do the process of updating.
+    ```python
+    def update(request) :
+        try :
+            book = Book.objects.get(book_id=request.POST['book_id_update'])
+            book.book_id = request.POST['book_id']
+            book.isbn = request.POST['isbn']
+            book.book_name = request.POST['book_name']
+            book.price = request.POST['price']
+            book.author = request.POST['author']
+            book.save()
+        except KeyError :
+            request.session['book_id_update'] = request.POST['book_id_update']
+        return HttpResponseRedirect(reverse('store:index'))
+    ```
+
+    Next thing you have to do is modifying index to serve book that it want to update to the webpage.
+    Edit `index` in `store\views.py` that if `request.session['book_id_update']` is exist I get the book from it, then I delete it.          
+    Now I have one more field to send to webpage which is `update_book`.
+    ```python
+    def index(request) :
+        book_list = Book.objects.all()
+        try :
+            book = Book.objects.get(book_id=request.session['book_id_update'])
+            del request.session['book_id_update']
+        except KeyError :
+            book = None
+        return render(request,'index.html',{'book_list':book_list,'update_book':book})
+    ```
+
+    Add this to `store\urls.py` to create route to update  
+    ```
+    url(r'^update/$',views.update,name='update'),
+    ```
+
+    Finally, Edit our `store\templates\index.html` to have one more column and check if update_book==book then show input box instead of text.
+    ```html
+    <table>
+      <!-- table header -->
+      <tr>
+        <th>Book ID</th>
+        <th>ISBN</th>
+        <th>Book Name</th>
+        <th>Price</th>
+        <th>Author</th>
+        <th></th>
+        <th></th>
+      </tr>
+      <!-- iterating inserting row in table -->
+      {% for book in book_list %}
+        <tr>
+          <form action="{% url 'store:update' %}" method="post">
+            {% csrf_token %}
+            {% if update_book == book %}
+              <td><input type="number" name="book_id" value="{{ book.book_id }}"></td>
+              <td><input type="number" name="isbn" value="{{ book.isbn }}"></td>
+              <td><input type="text" name="book_name" value="{{ book.book_name }}"></td>
+              <td><input type="number" name="price" value="{{ book.price }}"></td>
+              <td><input type="text" name="author" value="{{ book.author }}"></td>
+            {% else %}
+              <td>{{ book.book_id }}</td>
+              <td>{{ book.isbn }}</td>
+              <td>{{ book.book_name }}</td>
+              <td>{{ book.price }}</td>
+              <td>{{ book.author }}</td>
+            {% endif %}
+            <td><button name="book_id_update" value="{{ book.book_id }}">Update</button></td>
+          </form>
+          <td>
+            <form action="{% url 'store:delete' %}" method="post">
+              {% csrf_token %}
+              <button name="book_id" value="{{ book.book_id }}">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+    ```
+
+    Let's run server and go to `http://localhost:8000/` and try to update some row.
+    ```
+    python manage.py runserver
+    ```
+
+    This is all about it.
+    Now We Finish it!!!

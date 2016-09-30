@@ -30,15 +30,28 @@
         <th>Price</th>
         <th>Author</th>
         <th></th>
+        <th></th>
       </tr>
       <!-- iterating inserting row in table -->
       {% for book in book_list %}
         <tr>
-          <td>{{ book.book_id }}</td>
-          <td>{{ book.isbn }}</td>
-          <td>{{ book.book_name }}</td>
-          <td>{{ book.price }}</td>
-          <td>{{ book.author }}</td>
+          <form action="{% url 'store:update' %}" method="post">
+            {% csrf_token %}
+            {% if update_book == book %}
+              <td><input type="number" name="book_id" value="{{ book.book_id }}"></td>
+              <td><input type="number" name="isbn" value="{{ book.isbn }}"></td>
+              <td><input type="text" name="book_name" value="{{ book.book_name }}"></td>
+              <td><input type="number" name="price" value="{{ book.price }}"></td>
+              <td><input type="text" name="author" value="{{ book.author }}"></td>
+            {% else %}
+              <td>{{ book.book_id }}</td>
+              <td>{{ book.isbn }}</td>
+              <td>{{ book.book_name }}</td>
+              <td>{{ book.price }}</td>
+              <td>{{ book.author }}</td>
+            {% endif %}
+            <td><button name="book_id_update" value="{{ book.book_id }}">Update</button></td>
+          </form>
           <td>
             <form action="{% url 'store:delete' %}" method="post">
               {% csrf_token %}
