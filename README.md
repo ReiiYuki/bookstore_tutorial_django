@@ -66,6 +66,7 @@
 ##Let's Start!
   1. Initialize our project
 
+    In your cmd, terminal, or bash...
     ```
     django-admin startproject bookstore
     cd bookstore
@@ -87,4 +88,11 @@
     }
     ```
 
-  
+  3. Initialize store app
+
+    In your cmd, terminal, or bash...
+    ```
+    python manage.py startapp store
+    ```
+
+    Now, you will got `store` directory in your project
