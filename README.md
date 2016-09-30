@@ -96,3 +96,5 @@
     ```
 
     Now, you will got `store` directory in your project
+
+  4. Connect your app to your project
