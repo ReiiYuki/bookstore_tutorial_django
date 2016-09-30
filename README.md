@@ -194,14 +194,14 @@
     ]
     ```
 
-    Let's run server and go to `http://localhost:8000/` you will see what you wrote in your index.html
+    Let's run server and go to `http://localhost:8000/` you will see what you wrote in your index.html  
     ```
     python manage.py runserver
     ```
 
   8. Create simple insert form.
 
-    Add this part to body of your `store\templates\index.html` as the form that we will work on it.
+    Add this part to body of your `store\templates\index.html` as the form that we will work on it.  
     ```html
     <h2>Insert New Book</h2>
     <form>
@@ -226,8 +226,8 @@
 
   9. Make our form work for inserting book.
 
-    Before we work on our form let prepare some method to receive request from our form and it will be insert book to our database.
-    Edit `store\views.py` then add method to insert book
+    Before we work on our form let prepare some method to receive request from our form and it will be insert book to our database.  
+    Edit `store\views.py` then add method to insert book  
     ```python
     from django.shortcuts import render
     from django.http import HttpResponseRedirect
@@ -255,11 +255,11 @@
     url(r'^insert/$',views.insert,name='insert'),
     ```
 
-    After that let modify our form to interact with insert method.
-    Edit `store\templates\index.html` by
-    Add action to form which reference to our insert method url, then set method as POST because we will post the data to it.
-    Modify each input field to have name same as we define to receive in field of request.POST in insert method.
-    Don't forget to add `{% csrf_token %}` in your form, because it require for work on form with Django.
+    After that let modify our form to interact with insert method.  
+    Edit `store\templates\index.html` by  
+    Add action to form which reference to our insert method url, then set method as POST because we will post the data to it.  
+    Modify each input field to have name same as we define to receive in field of request.POST in insert method.    
+    Don't forget to add `{% csrf_token %}` in your form, because it require for work on form with Django.  
     ```html
     <form action="{% url 'store:insert' %}" method="POST">
       {% csrf_token %}
