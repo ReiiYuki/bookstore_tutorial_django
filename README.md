@@ -137,3 +137,22 @@
         url(r'^admin/', admin.site.urls),
     ]
     ```
+
+  6. Create Book Model in your store app
+
+    Edit `store\models.py`
+    ```python
+    class Book(models.Model) :
+      book_id = models.PositiveIntegerField(primary_key=True)
+      isbn = models.PositiveIntegerField()
+      book_name = models.CharField(max_length=200)
+      price = models.FloatField()
+      author = models.CharField(max_length=200)
+    ```
+
+    Migrate it to our database (Do this in your cmd)
+    ```
+    python manage.py makemigrations store
+    python manage.py Migrate
+    ```
+  
