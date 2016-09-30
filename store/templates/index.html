@@ -7,16 +7,17 @@
   <body>
     <h1>Book Store</h1>
     <h2>Insert New Book</h2>
-    <form>
-      Book ID : <input type="number">
+    <form action="{% url 'store:insert' %}" method="POST">
+      {% csrf_token %}
+      Book ID : <input type="number" name="book_id">
       <br><br>
-      ISBN : <input type="number">
+      ISBN : <input type="number" name="isbn">
       <br><br>
-      Book Name : <input type="text">
+      Book Name : <input type="text" name="book_name">
       <br><br>
-      Price : <input type="number">
+      Price : <input type="number" name="price">
       <br><br>
-      Author : <input type="text">
+      Author : <input type="text" name="author">
       <br><br>
       <input type="submit" value="INSERT">
     </form>

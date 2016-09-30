@@ -201,7 +201,7 @@
 
   8. Create simple insert form.
 
-    Add this part to body of your `store\templates\index.html`
+    Add this part to body of your `store\templates\index.html` as the form that we will work on it.
     ```html
     <h2>Insert New Book</h2>
     <form>
@@ -223,3 +223,63 @@
     ```
     python manage.py runserver
     ```
+
+  9. Make our form work for inserting book.
+
+    Before we work on our form let prepare some method to receive request from our form and it will be insert book to our database.
+    Edit `store\views.py` then add method to insert book
+    ```python
+    from django.shortcuts import render
+    from django.http import HttpResponseRedirect
+    from django.urls import reverse
+    from .models import Book
+
+    # Create your views here.
+    def index(request) :
+        return render(request,'index.html')
+
+    def insert(request) :
+        book_id = request.POST['book_id']
+        isbn = request.POST['isbn']
+        book_name = request.POST['book_name']
+        price = request.POST['price']
+        author = request.POST['author']
+        book = Book.objects.create(book_id=book_id,isbn=isbn,book_name=book_name,price=price,author=author)
+        book.save()
+        return HttpResponseRedirect(reverse('store:index'))
+    ```
+
+    Next, we will create route to our insert method.
+    Edit `store\urls.py` add this following line in urlpatterns
+    ```python
+    url(r'^insert/$',views.insert,name='insert'),
+    ```
+
+    After that let modify our form to interact with insert method.
+    Edit `store\templates\index.html` by
+    Add action to form which reference to our insert method url, then set method as POST because we will post the data to it.
+    Modify each input field to have name same as we define to receive in field of request.POST in insert method.
+    Don't forget to add `{% csrf_token %}` in your form, because it require for work on form with Django.
+    ```html
+    <form action="{% url 'store:insert' %}" method="POST">
+      {% csrf_token %}
+      Book ID : <input type="number" name="book_id">
+      <br><br>
+      ISBN : <input type="number" name="isbn">
+      <br><br>
+      Book Name : <input type="text" name="book_name">
+      <br><br>
+      Price : <input type="number" name="price">
+      <br><br>
+      Author : <input type="text" name="author">
+      <br><br>
+      <input type="submit" value="INSERT">
+    </form>
+    ```
+
+    Let's run server and go to `http://localhost:8000/` and try to insert some book.
+    ```
+    python manage.py runserver
+    ```
+
+    Then go to see your table in your database you will see your book is added to the schema.
