@@ -155,4 +155,45 @@
     python manage.py makemigrations store
     python manage.py Migrate
     ```
-  
+
+  7. Make it show it webpage
+
+    Create `store\templates\index.html` We will use this as our webpage.
+    ```html
+    <!Doctype html>
+    <html>
+      <header>
+        <meta charset="utf-8">
+        <title>Bookstore</title>
+      </header>
+      <body>
+        <h1>Book Store</h1>
+      </body>
+    </html>
+    ```
+
+    Edit `store\views.py` to have a method to serve our webpage from index.html
+    ```python
+    from django.shortcuts import render
+
+    # Create your views here.
+    def index(request) :
+        return render(request,'index.html')
+    ```
+
+    Edit `store\urls.py` to route your app to index method
+    ```python
+    from django.conf.urls import url
+
+    from . import views
+
+    app_name = 'store'
+
+    urlpatterns = [
+        url(r'^$',views.index,name='index'),
+    ]
+    ```
+
+    Let's run server and go to `http://localhost:8000/` you will see what you wrote in your index.html
+    `python manage.py runserver`
+    
